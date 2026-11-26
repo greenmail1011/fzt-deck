@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FZT 富志科技總覽簡報</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: photo-first horizontal deck. Each slide is a short title plus a grid of real photos and screenshots; captions are one to four words. */
+:root{
+  --bg:#0a1122;
+  --panel:#111c36;
+  --line:#22365e;
+  --text:#eaf1ff;
+  --muted:#9fb1d4;
+  --cyan:#38bdf8;
+  --amber:#fbbf24;
+  --font:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
+#viewport{position:fixed;left:0;right:0;top:0;bottom:52px;overflow:hidden;background:#05080f}
+#deck{position:absolute;left:50%;top:50%;width:1600px;height:900px;margin:-450px 0 0 -800px;transform-origin:center center;background:var(--bg);overflow:clip;outline:none}
+.slide{position:absolute;left:0;top:0;width:1600px;height:900px;padding:26px 40px;display:flex;flex-direction:column;gap:16px;overflow:hidden;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.slide.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.st{transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+.st.hide{opacity:0;transform:translateY(46px) scale(.93);pointer-events:none}
+#pg{position:absolute;right:28px;bottom:14px;z-index:60;font-size:22px;font-weight:700;color:#fff;background:rgba(7,12,26,.72);border:1px solid var(--line);padding:4px 16px;border-radius:999px;pointer-events:none;letter-spacing:.04em}
+#notes{position:fixed;left:0;right:0;bottom:52px;background:rgba(5,8,15,.95);border-top:1px solid var(--line);padding:14px 28px;font-size:20px;line-height:1.6;display:none;z-index:50}
+#notes.on{display:block}
+body.fs nav{display:none}
+body.fs #viewport{bottom:0}
+body.fs #notes{bottom:0}
+.lk.nl small::after{content:"　・需先登入";color:var(--amber)}
+#fs{padding:7px 12px}
+.head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--cyan)}
+h2{font-size:38px;font-weight:900;line-height:1.15}
+.url{font-size:14px;color:var(--muted)}
+.grid{flex:1;min-height:0;display:grid;gap:14px}
+figure{position:relative;min-width:0;min-height:0;display:flex;background:#0d1730;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img{width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in;position:relative;z-index:1}
+figure::before,.tile::before{content:"";position:absolute;inset:-20px;background:var(--bg) center/cover;filter:blur(22px) brightness(.45);z-index:0}
+figcaption{z-index:2}
+figure.fill img{object-fit:contain}
+figcaption{position:absolute;left:10px;bottom:10px;background:rgba(7,12,26,.82);border:1px solid var(--line);color:var(--text);font-size:15px;font-weight:700;padding:3px 11px;border-radius:999px;pointer-events:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:4px 14px;border:1px solid var(--line);border-radius:999px;font-size:16px;color:var(--text);background:var(--panel)}
+.chip b{color:var(--amber)}
+.arrow{color:var(--amber);align-self:center;font-weight:900}
+
+/* cover */
+.cover{padding:0}
+.cover .bg{position:absolute;inset:0;background:url(img/g-launch.jpg) center/cover no-repeat;filter:saturate(1.05)}
+.cover .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,30,.25) 0%,rgba(8,14,30,.55) 45%,rgba(8,14,30,.93) 100%)}
+.cover .txt{position:relative;margin-top:auto;padding:56px;display:flex;flex-direction:column;gap:12px}
+.cover .brand{font-size:19px;letter-spacing:.22em;color:var(--cyan);font-weight:700}
+.cover h1{font-size:84px;font-weight:900;line-height:1.08}
+.cover .sub{font-size:21px;color:#d6e2fb}
+.cover .tag{width:56px;height:5px;background:var(--amber);border-radius:3px}
+
+/* overview tiles */
+.tiles{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.tiles .tile{grid-column:span 2}
+.tiles .tile:nth-child(n+4){grid-column:span 3}
+#s2 .tiles{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:1fr 1fr}
+#s2 .tiles .tile{grid-column:span 2;grid-row:auto}
+.tile img.pc{object-fit:cover;object-position:50% 0}
+.tile{position:relative;display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);text-decoration:none;color:inherit;background:#0d1730;min-height:0}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.tile .lab{z-index:2;position:absolute;left:0;right:0;bottom:0;padding:34px 14px 14px;background:linear-gradient(0deg,rgba(7,12,26,.95),rgba(7,12,26,0));display:flex;flex-direction:column;gap:2px}
+.tile i{font-style:normal;font-size:12px;color:var(--cyan);font-weight:700;letter-spacing:.1em}
+.tile b{font-size:24px;font-weight:900}
+.tile:hover{border-color:var(--cyan)}
+
+/* per-slide grids (desktop) */
+.g-web{grid-template-columns:1.35fr 1fr;grid-template-rows:minmax(0,1fr)}
+.g-web .col{display:grid;gap:inherit;grid-template-rows:minmax(0,1fr);min-height:0}
+.g-assoc{grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr))}
+.g-assoc .big{grid-row:span 2}
+.g-camp{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr)}
+.g-camp .col{display:grid;gap:inherit;grid-template-rows:minmax(0,.7fr) minmax(0,1.3fr);min-height:0}
+.g-help{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.g-help .col{display:grid;gap:inherit;grid-template-rows:auto minmax(0,1fr);min-height:0}
+.g-help .posters{display:grid;gap:inherit;grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));min-height:0}
+.simwrap{position:relative;flex:1;min-height:0}
+.simwrap .hero{position:absolute;inset:0;margin:0;border-radius:14px;overflow:hidden}
+.simwrap .hero img{width:100%;height:100%}
+.simwrap .g-sim{position:absolute;inset:0;z-index:1;background:var(--bg);padding:0}
+.g-sim{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.g-end{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr)}
+
+
+.foot{display:flex;flex-direction:column;gap:8px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.lk{display:inline-flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--text);background:#0e2447;border:1px solid #2a4f8a;border-radius:10px;padding:6px 14px}
+.lk span{font-size:16px;font-weight:700}
+.lk small{font-size:12px;color:var(--cyan);word-break:break-all}
+.lk::after{content:"↗";color:var(--amber);font-weight:900;font-size:14px;order:3}
+.lk:hover{border-color:var(--cyan);background:#12305c}
+.lk:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+
+.g-facets{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:1fr 1.5fr}
+.tile.ph{display:flex;align-items:flex-end;background:linear-gradient(160deg,#143a73,#0b1f44 60%,#1b2f5e)}
+.tile.ph .big{position:absolute;left:14px;top:14px;right:14px;font-size:32px;font-weight:900;line-height:1.25;color:#cfe4ff}
+.tile.ph .big small{display:block;font-size:16px;font-weight:500;color:var(--muted);margin-top:8px}
+.g-wall{grid-template-columns:1.25fr repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.g-wall figure img{object-fit:contain}
+.g-wall figure.big{grid-row:span 2}
+.g-wall figure.big img{object-fit:contain}
+
+.g-school{grid-template-columns:1fr 1fr 1fr 1.25fr .8fr;grid-template-rows:repeat(2,minmax(0,1fr))}
+.g-school .tall{grid-row:span 2}
+.g-comp{grid-template-columns:1.25fr .9fr 1fr;grid-template-rows:minmax(0,1fr)}
+.g-comp2{grid-template-columns:1.1fr 1fr 1fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr))}
+.g8{display:flex;align-items:center;gap:12px;flex:1;min-height:0}
+.g8{justify-content:center}
+.g8 figure{flex:none;aspect-ratio:var(--ar)}
+.g8 .col{display:flex;flex-direction:column;gap:12px}
+.g8 figure{position:relative;margin:0;border-radius:14px;overflow:hidden;min-height:0}
+.g8 figure img{width:100%;height:100%;object-fit:cover;display:block}
+.endbanner{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.endbanner figure{margin:0;width:100%;aspect-ratio:2.63;border-radius:16px;overflow:hidden}
+.endbanner img{width:100%;height:100%;object-fit:cover;display:block}
+.rp{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
+.rp .real{display:grid;gap:12px;flex:1.5;min-height:0}
+.rp .real figure img{object-fit:contain}
+.rp .strip{display:grid;gap:8px;flex:1;min-height:0}
+.rp .strip figure img{object-fit:contain}
+.rp .strip figure.fill img{object-fit:contain}
+.rp .strip figcaption{font-size:11px;padding:1px 7px;left:5px;bottom:5px}
+.r5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.r4{grid-template-columns:repeat(5,minmax(0,1fr))}
+.rp .real{display:flex;gap:10px;flex:3;min-height:0}
+.rp .real figure img{object-fit:cover}
+.fr{display:flex;gap:10px;min-height:0}
+.fr figure{flex:var(--ar) 1 0}
+.c2{display:flex;flex-direction:column;gap:10px;min-height:0}
+.c2 .fr{flex:1}
+.g7{display:grid;grid-template-columns:1fr 2.8fr;gap:12px;flex:1;min-height:0}
+.g7 .r6{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;min-height:0}
+.g7 .r6 figure img{object-fit:cover}
+.g-comp2 .big{grid-row:span 2}
+.g-comp .col{display:grid;gap:inherit;grid-template-rows:repeat(2,minmax(0,1fr));min-height:0}
+.panel{position:relative;border:1px solid var(--line);border-radius:12px;background:linear-gradient(160deg,#143a73,#0b1f44 60%,#1b2f5e);padding:26px;display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0}
+.panel b{font-size:36px;font-weight:900;line-height:1.2;color:#dbeaff}
+.panel span{font-size:18px;color:var(--muted)}
+
+/* lightbox */
+#lb{position:fixed;inset:0;background:rgba(3,6,14,.92);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;cursor:zoom-out}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:100%;border-radius:8px}
+
+nav{height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 32px;border-top:1px solid var(--line);background:#080e1c}
+nav button{font-family:var(--font);font-size:15px;font-weight:700;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 18px;cursor:pointer}
+nav button:hover{border-color:var(--cyan)}
+nav button:disabled{opacity:.35;cursor:default}
+nav button:focus-visible,.tile:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#dots{display:flex;gap:8px;align-items:center}
+#dots button{width:12px;height:12px;padding:0;border-radius:50%;border:1px solid var(--muted);background:transparent}
+#dots button[aria-current="true"]{background:var(--amber);border-color:var(--amber);transform:scale(1.2)}
+#count{font-size:13px;color:var(--muted);min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion:reduce){.slide,.st{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="viewport"><main id="deck" tabindex="0" aria-label="FZT 富志科技簡報，用左右鍵或下方按鈕翻頁">
+
+<!-- 1 cover -->
+<section class="slide cover" id="s1">
+  <div class="bg"></div><div class="shade"></div>
+  <div class="txt">
+    <div class="brand">FZT　富志科技</div>
+    <div class="tag"></div>
+    <h1>從一顆飛行的球<br>開啟 AI 運動科技新未來</h1>
+    <p class="sub" style="font-size:30px;font-weight:700;color:#fff;margin-bottom:10px">讓球起飛　讓 AI 創新落地</p>
+    <p class="sub">人工智慧 × 無人機 × 運動科技 × 教育創新</p>
+  </div>
+</section>
+
+<!-- 2 overview -->
+<section class="slide" id="s2">
+  <div class="head"><span class="eyebrow">OVERVIEW</span><h2>六條線</h2></div>
+  <div class="grid tiles">
+    <a class="tile" href="#s3"><img src="img/s-hero.jpg" alt="官網首頁"><div class="lab"><i>01</i><b>官網</b></div></a>
+    <a class="tile" href="#s4"><img src="img/g-assembly.jpg" alt="第一次會員大會合照"><div class="lab"><i>02</i><b>協會</b></div></a>
+    <a class="tile" href="#s9"><img class="pc" src="img/camp-dm.jpg" alt="冬令營海報"><div class="lab"><i>03</i><b>AI 導入報名</b></div></a>
+    <a class="tile" href="#s10"><img src="img/vid-pairing.jpg" alt="對頻教學影片"><div class="lab"><i>04</i><b>問題客服</b></div></a>
+    <a class="tile" href="#s11"><img src="img/rr5.jpg" alt="計分板畫面"><div class="lab"><i>05</i><b>賽程計分</b></div></a>
+    <a class="tile" href="#s12"><img src="img/sim1.jpg" alt="模擬器畫面"><div class="lab"><i>06</i><b>模擬器訓練</b></div></a>
+  </div>
+</section>
+
+<!-- 3 website -->
+<section class="slide" id="s3">
+  <div class="head"><span class="eyebrow">01　官網</span><h2>首頁與最新消息</h2><span class="url">hcdrone.org.tw</span></div>
+  <div class="grid g-web">
+    <figure><img src="img/s-hero.jpg" alt="官網首頁輪播"><figcaption>首頁輪播</figcaption></figure>
+    <figure><img src="img/s-news.jpg" alt="官網最新消息"><figcaption>最新消息</figcaption></figure>
+  </div>
+  <div class="chips"><span class="chip">後台發文</span><span class="chip">活動自動同步</span><span class="chip">分享縮圖</span><span class="chip">圖片延遲載入</span></div>
+  <div class="links"><a class="lk" href="https://hcdrone.org.tw/" target="_blank" rel="noopener"><span>協會官網</span><small>hcdrone.org.tw/</small></a><a class="lk" href="https://greenmail1011.github.io/futurezebra" target="_blank" rel="noopener"><span>未來斑馬官網</span><small>greenmail1011.github.io/futurezebra</small></a></div>
+</section>
+
+<!-- 4 association facets -->
+<section class="slide" id="s4">
+  <div class="head"><span class="eyebrow">02　協會</span><h2>協會的五個面向</h2></div>
+  <div class="grid tiles g-facets">
+    <a class="tile" href="#s5"><img src="img/r-gangnan_0.jpg" alt="青銀飛行趣港南"><div class="lab"><i>01</i><b>青銀社區發展</b></div></a>
+    <a class="tile" href="#s6"><img src="img/g-launch.jpg" alt="追風少年科技培力課程啟動記者會"><div class="lab"><i>02</i><b>培力課程教育</b></div></a>
+    <a class="tile" href="#s8"><img src="img/r-tianqiong_0.jpg" alt="天穹盃合照"><div class="lab"><i>03</i><b>競賽</b></div></a>
+    <a class="tile" href="#s8"><img src="img/comp-training.jpg" alt="裁判培訓合照"><div class="lab"><i>04</i><b>裁判培訓</b></div></a>
+    <a class="tile" href="#s8"><img src="img/g-assembly.jpg" alt="第一次會員大會合照"><div class="lab"><i>05</i><b>協會動態</b></div></a>
+  </div>
+  <div class="chips"><span class="chip">線上入會</span><span class="chip">後台審核</span><span class="chip">進度查詢</span></div>
+  <div class="links"><a class="lk" href="https://hcdrone.org.tw/#membership" target="_blank" rel="noopener"><span>入會申請</span><small>hcdrone.org.tw/#membership</small></a><a class="lk" href="https://hcdrone.org.tw/member-status.html" target="_blank" rel="noopener"><span>入會進度查詢</span><small>hcdrone.org.tw/member-status.html</small></a><a class="lk" href="https://hcdrone.org.tw/member-admin.html" target="_blank" rel="noopener"><span>入會審核後台</span><small>hcdrone.org.tw/member-admin.html</small></a></div>
+</section>
+
+<!-- 5 senior / community -->
+<section class="slide" id="s5">
+  <div class="head"><span class="eyebrow">02　協會 ／ 青銀社區發展</span><h2>青銀飛行趣　12 個社區</h2></div>
+  <div class="rp">
+    <div class="real">
+      <div class="fr" style="flex:1.09 1 0"><figure style="--ar:0.64"><img src="img/c-mayor.jpg" alt="市長體驗"><figcaption>市長體驗</figcaption></figure><figure style="--ar:0.45"><img src="img/r-chaiqiao_1.jpg" alt="柴橋"><figcaption>柴橋</figcaption></figure></div>
+      <div class="c2" style="flex:1.95 1 0"><div class="fr"><figure style="--ar:1.78"><img src="img/r-beimen_2.jpg" alt="北門"><figcaption>北門</figcaption></figure><figure style="--ar:2.2"><img src="img/r-dingpu_3.jpg" alt="頂埔"><figcaption>頂埔</figcaption></figure></div><div class="fr"><figure style="--ar:2.2"><img src="img/r-gangnan_0.jpg" alt="港南"><figcaption>港南</figcaption></figure><figure style="--ar:1.57"><img src="img/r-joint_1.jpg" alt="青銀共融"><figcaption>青銀共融</figcaption></figure></div></div>
+    </div>
+    <div class="strip" style="grid-template-columns:repeat(12,minmax(0,1fr))">
+      <figure><img src="img/c-beimen.jpg" alt="北門 11/6海報"><figcaption>北門 11/6</figcaption></figure>
+      <figure><img src="img/c-dingpu.jpg" alt="頂埔 11/9海報"><figcaption>頂埔 11/9</figcaption></figure>
+      <figure><img src="img/c-gangnan.jpg" alt="港南 11/13海報"><figcaption>港南 11/13</figcaption></figure>
+      <figure><img src="img/c-lechao.jpg" alt="樂巢代 11/14海報"><figcaption>樂巢代 11/14</figcaption></figure>
+      <figure><img src="img/c-jiugang.jpg" alt="舊港 11/19海報"><figcaption>舊港 11/19</figcaption></figure>
+      <figure><img src="img/c-dazhuang.jpg" alt="大庄 11/25海報"><figcaption>大庄 11/25</figcaption></figure>
+      <figure><img src="img/c-haishan.jpg" alt="海山 11/26海報"><figcaption>海山 11/26</figcaption></figure>
+      <figure><img src="img/c-hushan.jpg" alt="虎山 11/27海報"><figcaption>虎山 11/27</figcaption></figure>
+      <figure><img src="img/c-xiangcun.jpg" alt="香村 12/16海報"><figcaption>香村 12/16</figcaption></figure>
+      <figure><img src="img/c-changqing.jpg" alt="長青 12/17海報"><figcaption>長青 12/17</figcaption></figure>
+      <figure><img src="img/c-haibin.jpg" alt="海濱 12/29海報"><figcaption>海濱 12/29</figcaption></figure>
+      <figure><img src="img/c-shuitian.jpg" alt="水田 12/30海報"><figcaption>水田 12/30</figcaption></figure>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">免費參加</span><span class="chip">零經驗也能玩</span><span class="chip">每個社區一個報名連結</span></div>
+  <div class="links"><a class="lk" href="https://greenmail1011.github.io/community-signup/?c=beimen" target="_blank" rel="noopener"><span>社區報名（北門）</span><small>greenmail1011.github.io/community-signup/?c=beimen</small></a><a class="lk" href="https://greenmail1011.github.io/community-signup/?c=jiugang" target="_blank" rel="noopener"><span>社區報名（舊港）</span><small>greenmail1011.github.io/community-signup/?c=jiugang</small></a><a class="lk" href="https://greenmail1011.github.io/community-signup/admin.html" target="_blank" rel="noopener"><span>社區報名後台</span><small>greenmail1011.github.io/community-signup/admin.html</small></a></div>
+</section>
+
+<!-- 6 schools -->
+<section class="slide" id="s6">
+  <div class="head"><span class="eyebrow">02　協會 ／ 培力課程教育</span><h2>各校課程與社團</h2></div>
+  <div class="rp">
+    <div class="real">
+      <div class="fr" style="flex:1.5 1 0"><figure style="--ar:1.5"><img src="img/launch2.jpg" alt="追風少年科技培力課程啟動式" style="object-fit:contain"><figcaption>啟動式</figcaption></figure></div>
+      <div class="c2" style="flex:1.1 1 0"><div class="fr"><figure style="--ar:2.2"><img src="img/r-fuli.jpg" alt="富禮國中"><figcaption>富禮國中</figcaption></figure></div><div class="fr"><figure style="--ar:2.2"><img src="img/r-xiangshanhs.jpg" alt="香山高中"><figcaption>香山高中</figcaption></figure></div></div>
+      <div class="c2" style="flex:1.1 1 0"><div class="fr"><figure style="--ar:2.2"><img src="img/r-chengde.jpg" alt="成德高中"><figcaption>成德高中</figcaption></figure></div><div class="fr"><figure style="--ar:2.2"><img src="img/r-shuwei.jpg" alt="數位實驗高中"><figcaption>數位實驗高中</figcaption></figure></div></div>
+      <div class="fr" style="flex:1.33 1 0"><figure style="--ar:1.33"><img src="img/r-nanliao.jpg" alt="南寮國小"><figcaption>南寮國小</figcaption></figure></div>
+    </div>
+    <div class="strip" style="display:flex;justify-content:center;gap:12px">
+      <figure style="height:100%;aspect-ratio:1.33"><img src="img/tl-nanai.jpg" alt="南隘國小" style="object-fit:cover"><figcaption>南隘國小</figcaption></figure>
+      <figure style="height:100%;aspect-ratio:2.25"><img src="img/tl-zhulian.jpg" alt="竹蓮國小" style="object-fit:cover"><figcaption>竹蓮國小</figcaption></figure>
+      <figure style="height:100%;aspect-ratio:2.06"><img src="img/tl-xwsh.jpg" alt="校外生活輔導會" style="object-fit:cover"><figcaption>校外輔導會</figcaption></figure>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">追風少年 K-12 科技培力課程</span><span class="chip">各校課後社團</span></div>
+</section>
+
+<!-- 7 competition / referee / news -->
+<section class="slide" id="s7">
+  <div class="head"><span class="eyebrow">02　協會 ／ 培力課程教育</span><h2>各校現場</h2></div>
+  <div class="g8">
+    <div class="col"><figure style="--ar:1.33;height:340px"><img src="img/tl-nanhua.jpg" alt="南華國中"><figcaption>南華國中</figcaption></figure>
+    <figure style="--ar:1.33;height:340px"><img src="img/tl-chengde.jpg" alt="成德高中"><figcaption>成德高中</figcaption></figure></div>
+    <figure style="--ar:1.78;width:960px"><img src="img/tl-fuli.jpg" alt="富禮國中"><figcaption>富禮國中</figcaption></figure>
+  </div>
+  <div class="chips"><span class="chip">十站校園巡迴</span><span class="chip">場場實機飛行</span></div>
+</section>
+
+<section class="slide" id="s8">
+  <div class="head"><span class="eyebrow">02　協會 ／ 競賽 ‧ 裁判培訓 ‧ 協會動態</span><h2>賽事、培訓與協會動態</h2></div>
+  <div class="g7">
+    <figure><img src="img/comp-poster.jpg" alt="RoboRAVE海報"><figcaption>競賽</figcaption></figure>
+    <div class="r6">
+      <figure><img src="img/r-tianqiong_0.jpg" alt="天穹盃"><figcaption>天穹盃</figcaption></figure>
+      <figure><img src="img/r-tianqiong_1.jpg" alt="天穹盃"><figcaption>天穹盃</figcaption></figure>
+      <figure><img src="img/comp-field.jpg" alt="比賽現場"><figcaption>比賽現場</figcaption></figure>
+      <figure><img src="img/r-roborave.jpg" alt="RoboRAVE"><figcaption>RoboRAVE</figcaption></figure>
+      <figure><img src="img/comp-training.jpg" alt="裁判培訓"><figcaption>裁判培訓</figcaption></figure>
+      <figure><img src="img/comp-judge1.jpg" alt="裁判"><figcaption>裁判</figcaption></figure>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">RoboRAVE 新竹 Rally</span><span class="chip">裁判培訓 2026/4/25–26</span><span class="chip">天穹盃 新竹戰</span></div>
+  <div class="links"><a class="lk" href="https://hcdrone.org.tw/#news" target="_blank" rel="noopener"><span>協會最新消息</span><small>hcdrone.org.tw/#news</small></a><a class="lk" href="https://hcdrone.org.tw/#events" target="_blank" rel="noopener"><span>活動專區</span><small>hcdrone.org.tw/#events</small></a></div>
+</section>
+
+<!-- 8 AI camp signup -->
+<section class="slide" id="s9">
+  <div class="head"><span class="eyebrow">03　AI 導入報名</span><h2>2027 AI 創客冬令營</h2></div>
+  <div class="grid g-camp">
+    <figure><img class="pc" src="img/camp-dm.jpg" alt="冬令營海報"><figcaption>海報</figcaption></figure>
+    <div class="col">
+      <figure><img src="img/s-reg-top.jpg" alt="線上報名頁開頭與倒數"><figcaption>線上報名</figcaption></figure>
+      <figure><img src="img/s-camp-days.jpg" alt="五天學習歷程"><figcaption>五天課程</figcaption></figure>
+    </div>
+    <figure><img src="img/s-reg-plans.jpg" alt="報名身份與午餐選擇"><figcaption>身份與費用自動計算</figcaption></figure>
+  </div>
+  <div class="chips"><span class="chip">報名頁</span><span class="arrow">→</span><span class="chip">Google 表單</span><span class="arrow">→</span><span class="chip"><b>LINE 即時通知</b></span></div>
+  <div class="links"><a class="lk" href="https://greenmail1011.github.io/camp2027/" target="_blank" rel="noopener"><span>冬令營介紹</span><small>greenmail1011.github.io/camp2027/</small></a><a class="lk" href="https://greenmail1011.github.io/camp2027/register.html" target="_blank" rel="noopener"><span>線上報名</span><small>greenmail1011.github.io/camp2027/register.html</small></a><a class="lk" href="https://pse.is/9td57n" target="_blank" rel="noopener"><span>報名後台</span><small>pse.is/9td57n</small></a></div>
+</section>
+
+<!-- 9 support -->
+<section class="slide" id="s10">
+  <div class="head"><span class="eyebrow">04　問題客服</span><h2>先自己查，再留言</h2></div>
+  <div class="grid g-help">
+    <div class="col">
+      <figure><img src="img/s-feeby-search.jpg" alt="問題搜尋框與常見問題按鈕"><figcaption>直接搜尋</figcaption></figure>
+      <figure><img src="img/s-feeby-buttons.jpg" alt="遙控器按鈕圖解"><figcaption>按鈕圖解</figcaption></figure>
+    </div>
+    <figure><img src="img/s-feeby-pairing.jpg" alt="連線不上怎麼辦"><figcaption>連線不上怎麼辦</figcaption></figure>
+    <div class="posters">
+      <figure class="fill"><img src="img/vid-controller-assembly.jpg" alt="遙控器組裝影片"><figcaption>組裝</figcaption></figure>
+      <figure class="fill"><img src="img/vid-charging.jpg" alt="充電影片"><figcaption>充電</figcaption></figure>
+      <figure class="fill"><img src="img/vid-zeroing.jpg" alt="歸零影片"><figcaption>歸零</figcaption></figure>
+      <figure class="fill"><img src="img/vid-pairing.jpg" alt="對頻影片"><figcaption>對頻</figcaption></figure>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">四支教學影片</span><span class="chip">官網聯絡表單</span><span class="chip">入會進度查詢</span></div>
+  <div class="links"><a class="lk" href="https://greenmail1011.github.io/feeby/" target="_blank" rel="noopener"><span>操作手冊</span><small>greenmail1011.github.io/feeby/</small></a><a class="lk" href="https://hcdrone.org.tw/#contact" target="_blank" rel="noopener"><span>聯絡我們</span><small>hcdrone.org.tw/#contact</small></a><a class="lk" href="https://hcdrone.org.tw/member-status.html" target="_blank" rel="noopener"><span>入會進度查詢</span><small>hcdrone.org.tw/member-status.html</small></a></div>
+</section>
+
+<!-- 10 scoring -->
+<section class="slide" id="s11">
+  <div class="head"><span class="eyebrow">05　賽程計分</span><h2>賽程與計分，現場即時同步</h2><span class="url">2026 RoboRAVE 新竹 Rally</span></div>
+  <div class="grid g-sim">
+    <figure><img src="img/rr1.jpg" alt="賽程管理總覽與流程時間軸"><figcaption>流程時間軸</figcaption></figure>
+    <figure><img src="img/rr2.jpg" alt="隊伍名單與循環賽設定"><figcaption>隊伍與賽制</figcaption></figure>
+    <figure><img src="img/rr3.jpg" alt="積分榜"><figcaption>積分榜</figcaption></figure>
+    <figure><img src="img/rr4.jpg" alt="循環賽賽程與進入計分"><figcaption>循環賽賽程</figcaption></figure>
+    <figure><img src="img/rr5.jpg" alt="計分板"><figcaption>計分板</figcaption></figure>
+    <figure><img src="img/rr6.jpg" alt="現場看板"><figcaption>現場看板</figcaption></figure>
+  </div>
+  <div class="chips"><span class="chip">自動排賽程</span><span class="arrow">→</span><span class="chip">計分板計分</span><span class="arrow">→</span><span class="chip"><b>積分榜自動更新</b></span><span class="chip">勝 3 平 1 負 0</span></div>
+  <div class="links"><a class="lk" href="https://drone-scoreboard-5231d.web.app/%E8%B3%BD%E7%A8%8B%E8%A1%A8.html" target="_blank" rel="noopener"><span>賽程表</span><small>drone-scoreboard-5231d.web.app/賽程表.html</small></a><a class="lk" href="https://drone-scoreboard-5231d.web.app/%E8%A8%88%E5%88%86%E6%9D%BF.html" target="_blank" rel="noopener"><span>計分板</span><small>drone-scoreboard-5231d.web.app/計分板.html</small></a><a class="lk" href="https://drone-scoreboard-5231d.web.app/%E7%8F%BE%E5%A0%B4%E7%9C%8B%E6%9D%BF.html" target="_blank" rel="noopener"><span>現場看板</span><small>drone-scoreboard-5231d.web.app/現場看板.html</small></a></div>
+</section>
+
+<!-- 11 simulator -->
+<section class="slide" id="s12">
+  <div class="head"><span class="eyebrow">06　模擬器訓練</span><h2>免安裝，手機電腦都能飛</h2></div>
+  <div class="simwrap">
+  <div class="grid g-sim st">
+    <figure><img src="img/sim1.jpg" alt="全新物理引擎"></figure>
+    <figure><img src="img/sim2.jpg" alt="圓環練習、飛行賽道、闖關"></figure>
+    <figure><img src="img/sim3.jpg" alt="AI 對手五段難度"></figure>
+    <figure><img src="img/sim4.jpg" alt="天梯排行"></figure>
+    <figure><img src="img/sim5.jpg" alt="電腦手機平板都能玩"></figure>
+    <figure><img src="img/sim6.jpg" alt="多種視角與場景"></figure>
+  </div>
+    <figure class="hero st" style="z-index:2"><img src="img/sim-kid.jpg" alt="學生操作模擬器" style="object-fit:cover;object-position:50% 55%"><figcaption>現場操作</figcaption></figure>
+  <figure class="hero st" style="z-index:3"><img src="img/sim-kid2.jpg" alt="學生一起玩模擬器" style="object-fit:cover;object-position:50% 50%"><figcaption>一起挑戰</figcaption></figure>
+  </div>
+  <div class="links"><a class="lk" href="https://greenmail1011.github.io/sky-striker/" target="_blank" rel="noopener"><span>開始試玩模擬器</span><small>greenmail1011.github.io/sky-striker/</small></a></div>
+</section>
+
+<!-- 11 end -->
+<section class="slide" id="s13">
+  <div class="head"><span class="eyebrow">THANK YOU</span><h2>新竹市無人機創新科技協會</h2><span class="url">hcdrone.org.tw　｜　03-540-3463</span></div>
+  <div class="endbanner"><figure><img src="img/fz-banner.jpg" alt="未來斑馬 AI 創新學苑"></figure></div>
+  <div class="links"><a class="lk" href="https://hcdrone.org.tw/" target="_blank" rel="noopener"><span>協會官網</span><small>hcdrone.org.tw/</small></a><a class="lk" href="https://greenmail1011.github.io/camp2027/" target="_blank" rel="noopener"><span>冬令營</span><small>greenmail1011.github.io/camp2027/</small></a><a class="lk" href="https://greenmail1011.github.io/sky-striker/" target="_blank" rel="noopener"><span>模擬器</span><small>greenmail1011.github.io/sky-striker/</small></a></div>
+</section>
+
+<div id="pg"></div></main></div>
+<div id="notes"></div>
+
+<div id="lb" role="dialog" aria-label="放大檢視"><img alt=""></div>
+
+<nav aria-label="翻頁">
+  <button id="prev" type="button">← 上一頁</button>
+  <div id="dots" role="tablist" aria-label="頁碼"></div>
+  <span id="count">1 / 12</span>
+  <button id="fs" type="button" title="全螢幕 (F)">⛶</button>
+  <button id="next" type="button">下一頁 →</button>
+</nav>
+
+<script>
+document.querySelectorAll("figure,.tile").forEach(function(f){var i=f.querySelector("img");if(i)f.style.setProperty("--bg","url('"+i.getAttribute("src")+"')")});
+document.querySelectorAll('a.lk[href*="admin"]').forEach(function(a){a.classList.add('nl')});
+(function(){
+  var viewport=document.getElementById('viewport'), deck=document.getElementById('deck');
+  var slides=[].slice.call(deck.querySelectorAll('.slide'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next'), count=document.getElementById('count');
+  var lb=document.getElementById('lb'), lbImg=lb.querySelector('img'), notesEl=document.getElementById('notes');
+  var NOTES=['開場：富志科技做無人機教育與推廣。今天用六條線介紹：官網、協會、AI 導入報名、問題客服、賽程計分、模擬器訓練。',
+   '這頁是地圖。每條線一頁，點圖塊可以直接跳過去。',
+   '官網 hcdrone.org.tw：首頁輪播和最新消息由後台發文；活動專區自動同步；現場可示範手機版與分享縮圖。',
+   '協會五個面向：青銀社區發展、培力課程教育、競賽、裁判培訓、協會動態。可示範入會申請與進度查詢。',
+   '青銀飛行趣：12 個社區，每個社區有自己的海報與報名連結。先講現場照，最後一步翻出 12 張海報。現場可開報名頁示範。',
+   '追風少年科技培力：富禮、香山高中、成德、數位實驗、南寮國小教師研習；另有民富、竹蓮課後社團與翻轉營。',
+   '十站巡迴的各校現場：南華、成德、富禮，場場都有實機飛行。',
+   '賽事與培訓：天穹盃新竹戰、RoboRAVE、裁判培訓（4/25–26）。',
+   '2027 AI 創客冬令營：報名頁 → Google 表單 → LINE 即時通知。可示範身份與費用自動計算。',
+   '問題客服：先搜尋、按鈕圖解、連線教學與四支影片；解決不了再用官網聯絡表單。',
+   '賽程計分：流程時間軸 → 隊伍與賽制 → 積分榜 → 循環賽賽程 → 計分板 → 現場看板，一格一格點出來。勝 3 平 1 負 0；在賽程表按「進入計分」會開計分板，結果自動回傳，現場看板同步。',
+   '模擬器：現場開啟試玩。AI 五段難度、闖關、連線對戰、天梯。',
+   '結語與聯絡方式。'];
+  var SEL={4:'.rp > .real, .rp > .strip',5:'.rp > .real, .rp > .strip',7:'.g7 > figure, .g7 > .r6',10:'.g-sim > figure',11:'.simwrap .g-sim, .simwrap .hero'};
+  var steps=slides.map(function(sl,i){var q=SEL[i];var arr=q?[].slice.call(sl.querySelectorAll(q)):[];arr.forEach(function(e){e.classList.add('st')});return arr});
+  var shown=slides.map(function(sl,i){return steps[i].length});
+  var cur=-1;
+  slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','第 '+(i+1)+' 頁');b.addEventListener('click',function(){go(i,'all')});dots.appendChild(b)});
+  function fit(){var w=window.innerWidth,h=viewport.clientHeight;var sc=Math.min(w/1600,h/900);deck.style.transform='scale('+sc+')'}
+  function paint(){
+    var st=steps[cur];
+    st.forEach(function(e,j){e.classList.toggle('hide',j>=shown[cur])});
+    [].forEach.call(dots.children,function(d,k){d.setAttribute('aria-current',k===cur?'true':'false')});
+    prev.disabled=cur===0&&shown[cur]<=1; next.disabled=cur===slides.length-1&&shown[cur]>=st.length;
+    count.textContent=(cur+1)+' / '+slides.length+(st.length?'　·　'+shown[cur]+'/'+st.length:'');
+    notesEl.textContent=NOTES[cur]||'';
+    document.getElementById('pg').textContent=(cur+1)+' / '+slides.length+(st.length?'　·　'+shown[cur]+'/'+st.length:'');
+  }
+  function go(i,mode){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    if(i!==cur){
+      slides.forEach(function(s,k){s.classList.toggle('on',k===i)});
+      cur=i;
+      shown[i]=(mode==='fwd'&&steps[i].length)?1:steps[i].length;
+      var h='#s'+(i+1); if(location.hash!==h&&history.replaceState){try{history.replaceState(null,'',h)}catch(e){}}
+    }
+    paint();
+  }
+  function goNext(){ if(shown[cur]<steps[cur].length){shown[cur]++;paint()} else if(cur<slides.length-1){go(cur+1,'fwd')} }
+  function goPrev(){ if(steps[cur].length&&shown[cur]>1){shown[cur]--;paint()} else if(cur>0){go(cur-1,'all')} }
+  prev.addEventListener('click',goPrev); next.addEventListener('click',goNext);
+  function closeLb(){lb.classList.remove('on')}
+  [].forEach.call(document.querySelectorAll('figure img'),function(im){im.addEventListener('click',function(){lbImg.src=im.src;lbImg.alt=im.alt;lb.classList.add('on')})});
+  lb.addEventListener('click',closeLb);
+  function toggleFs(){var d=document;if(!d.fullscreenElement){(d.documentElement.requestFullscreen||function(){}).call(d.documentElement)}else{d.exitFullscreen()}}
+  document.addEventListener('fullscreenchange',function(){document.body.classList.toggle('fs',!!document.fullscreenElement);fit()});
+  document.getElementById('fs').addEventListener('click',toggleFs);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){closeLb();return}
+    if(lb.classList.contains('on'))return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='Enter'){e.preventDefault();goNext()}
+    else if(k==='ArrowLeft'||k==='PageUp'||k==='Backspace'){e.preventDefault();goPrev()}
+    else if(k==='Home'){go(0,'all')} else if(k==='End'){go(slides.length-1,'all')}
+    else if(k==='f'||k==='F'){toggleFs()} else if(k==='n'||k==='N'){notesEl.classList.toggle('on')}
+  });
+  function fromHash(){var m=/^#s(\d+)$/.exec(location.hash);var i=m?parseInt(m[1],10)-1:0;if(!slides[i])i=0;cur=-1;go(i,'all')}
+  window.addEventListener('hashchange',function(){var m=/^#s(\d+)$/.exec(location.hash);if(m&&parseInt(m[1],10)-1!==cur)fromHash()});
+  window.addEventListener('resize',fit);
+  fit(); fromHash();
+  deck.scrollLeft=0;
+})();
+</script>
+</body>
+</html>
